@@ -22,6 +22,10 @@ concurrency:
 jobs:
   post:
     runs-on: ubuntu-latest
+    # IG鍵をジョブ環境に展開しておく。未登録なら空文字になり、下のIGステップがスキップされる。
+    env:
+      IG_USER_ID: ${{ secrets.IG_USER_ID }}
+      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -68,11 +72,10 @@ jobs:
           X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
         run: node scripts/post-x.mjs
 
+      # IG_ACCESS_TOKEN が未登録の間は自動スキップ（Xだけ稼働できる）。鍵を入れれば自動で有効化。
       - name: Instagramへ投稿
-        if: ${{ github.event.inputs.dry_run != 'true' }}
+        if: ${{ github.event.inputs.dry_run != 'true' && env.IG_ACCESS_TOKEN != '' }}
         env:
-          IG_USER_ID: ${{ secrets.IG_USER_ID }}
-          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IMAGE_URL: ${{ steps.commitimg.outputs.image_url }}
         run: node scripts/post-instagram.mjs
 
