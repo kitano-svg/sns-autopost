@@ -48,8 +48,15 @@ gh repo create sns-autopost --public --source=. --push
 #### Instagram（プロアカウント必須）
 1. Instagramを**プロアカウント**（ビジネス/クリエイター）に切り替え、**Facebookページと連携**
 2. https://developers.facebook.com でアプリ作成（タイプ: ビジネス）
-3. グラフAPIエクスプローラーで権限 `instagram_basic`, `instagram_content_publish`, `pages_show_list` を付けてユーザートークンを生成
-4. トークンを**長期トークン（60日）**に交換:
+3. グラフAPIエクスプローラーで権限 `instagram_basic`, `instagram_content_publish`, `pages_show_list` を付けてユーザートークンを生成（この「短期トークン」とアプリID・app secretの3つを控える）
+
+> 💡 **4〜6は自動化スクリプトで一発です。** ローカルで次を実行すると、`IG_USER_ID` と長期トークン（`IG_ACCESS_TOKEN`）を出力します:
+> ```
+> npm run setup:ig -- <アプリID> <app secret> <短期トークン>
+> ```
+> 出力された2つをそのままGitHub Secretsに貼るだけ。以下の手動手順は参考用です。
+
+4. （手動でやる場合）トークンを**長期トークン（60日）**に交換:
    `GET /oauth/access_token?grant_type=fb_exchange_token&client_id={app-id}&client_secret={app-secret}&fb_exchange_token={短期トークン}`
 5. `GET /me/accounts` でページID → `GET /{page-id}?fields=instagram_business_account` で **IGユーザーID** を取得 → `IG_USER_ID`
 6. 長期トークン → `IG_ACCESS_TOKEN`
@@ -77,6 +84,24 @@ IG_ACCESS_TOKEN
 → 投稿はせず、リサーチ＋画像生成まで走り、Artifacts（post-output）から画像を確認できます。
 
 問題なければ `dry_run = false`（デフォルト）で手動実行して本番投稿をテスト。
+
+---
+
+## ローカルでテスト・確認する（任意・推奨）
+
+GitHub Actionsを回す前に、自分のPCで動作確認できます（Actionsの実行回数を節約できます）。
+
+1. `.env.example` を `.env` という名前でコピーし、取得した鍵を記入（`.env` はGitに上がりません）
+2. **鍵がすべて有効か一括チェック**（投稿はしません）:
+   ```
+   npm run check
+   ```
+   → 各サービスに ✅/❌ が出ます。全部✅なら本番OK。
+3. **リサーチ＋画像生成だけを試す**（投稿しない）:
+   ```
+   npm run test:local
+   ```
+   → `out/post.png` に今日の画像ができるので開いて確認。
 
 ---
 

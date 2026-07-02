@@ -1,5 +1,6 @@
 // Instagram へ画像付き投稿 (Graph API)
 // 必要env: IG_USER_ID, IG_ACCESS_TOKEN, IMAGE_URL (公開URL)
+import './env.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

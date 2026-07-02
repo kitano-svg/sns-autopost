@@ -1,4 +1,5 @@
 // 毎日のリサーチ: Claude API (web search付き) で本日の投稿ネタを収集し out/research.json に保存
+import './env.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

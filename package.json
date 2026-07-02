@@ -8,7 +8,10 @@
     "research": "node scripts/research.mjs",
     "image": "node scripts/generate-image.mjs",
     "post:x": "node scripts/post-x.mjs",
-    "post:ig": "node scripts/post-instagram.mjs"
+    "post:ig": "node scripts/post-instagram.mjs",
+    "check": "node scripts/preflight.mjs",
+    "setup:ig": "node scripts/setup-instagram.mjs",
+    "test:local": "node scripts/research.mjs && node scripts/generate-image.mjs"
   },
   "dependencies": {
     "sharp": "^0.33.5",

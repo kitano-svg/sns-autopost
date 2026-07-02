@@ -1,4 +1,5 @@
 // 投稿画像の生成: AI背景(Gemini) + テンプレのテキスト差し込み → out/post.png (1080x1350)
+import './env.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
