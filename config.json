@@ -1,0 +1,18 @@
+{
+  "brand": "タクミ｜AI Web制作",
+  "handle": "@takumi_ai_web",
+  "accentColor": "#6C5CE7",
+  "accentColor2": "#00CEC9",
+  "model": "claude-sonnet-5",
+  "themes": [
+    "AIを使ったWeb制作・HP制作の最新テクニックやツール",
+    "中小企業・個人事業主向けのAI活用術（集客・業務効率化）",
+    "最新のAIツール・AIニュース（ChatGPT / Claude / Gemini / 画像生成AIなど）",
+    "ホームページ・LPのデザイントレンドと改善Tips",
+    "フリーランス・Web制作者の働き方とAIによる生産性向上",
+    "SNS運用×AIの実践ノウハウ",
+    "AIで変わる仕事の未来・新しいスキルの学び方"
+  ],
+  "hashtagsInstagram": "#AI活用 #Web制作 #ホームページ制作 #AIツール #フリーランス #業務効率化 #ChatGPT #AI初心者",
+  "hashtagsX": "#AI活用 #Web制作"
+}

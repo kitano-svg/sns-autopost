@@ -1,0 +1,20 @@
+{
+  "name": "sns-autopost",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "毎日リサーチ→画像生成→Instagram/X自動投稿 (GitHub Actions)",
+  "scripts": {
+    "research": "node scripts/research.mjs",
+    "image": "node scripts/generate-image.mjs",
+    "post:x": "node scripts/post-x.mjs",
+    "post:ig": "node scripts/post-instagram.mjs"
+  },
+  "dependencies": {
+    "sharp": "^0.33.5",
+    "twitter-api-v2": "^1.17.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
