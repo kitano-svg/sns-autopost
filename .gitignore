@@ -1,3 +1,6 @@
 node_modules/
 out/
 .env
+
+# note下書きは非公開（Actions成果物としてのみ保存）
+drafts/

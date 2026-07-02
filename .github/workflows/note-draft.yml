@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: daily-note-draft
@@ -28,19 +28,13 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/note-draft.mjs
 
-      - name: 下書きをリポジトリにコミット
-        run: |
-          DATE=$(TZ=Asia/Tokyo date +%Y-%m-%d)
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add drafts
-          git commit -m "note draft: ${DATE}" || echo "no changes"
-          git push
-
-      - name: 成果物を保存 (確認用)
+      # 非公開: リポジトリにはコミットせず、Actionsの成果物(artifact)としてのみ保存する。
+      # 成果物はリポジトリの権限を持つ人だけがダウンロードでき、一般公開されない。
+      # 確認方法: Actions → 該当runを開く → 下部 Artifacts の「note-draft」をダウンロード。
+      - name: 下書きを成果物として保存 (非公開・要ダウンロード)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: note-draft
           path: drafts/
-          retention-days: 14
+          retention-days: 90
