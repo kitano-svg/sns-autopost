@@ -90,6 +90,12 @@ for (const key of ['title', 'excerpt', 'tags', 'body_markdown']) {
   if (!draft[key]) { console.error(`draftデータに ${key} がありません`); process.exit(1); }
 }
 
+// Web検索の引用タグ <cite ...>〜</cite> が本文に混ざることがあるので除去（中身のテキストは残す）
+const stripCite = (s) => (typeof s === 'string' ? s.replace(/<\/?cite[^>]*>/g, '') : s);
+draft.title = stripCite(draft.title);
+draft.excerpt = stripCite(draft.excerpt);
+draft.body_markdown = stripCite(draft.body_markdown);
+
 const tags = Array.isArray(draft.tags) ? draft.tags : [];
 const tagLine = tags.map((t) => '#' + String(t).replace(/^#/, '')).join(' ');
 
