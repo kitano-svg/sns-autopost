@@ -93,72 +93,51 @@ export async function renderImage(research, outPath, config) {
 
   const base = await sharp(bg).resize(W, H, { fit: 'cover' }).toBuffer();
 
-  const headlineLines = wrap(research.headline, 11);
-  const subLines = wrap(research.sub, 24);
-  const HEADLINE_SIZE = 84;
-  const SUB_SIZE = 38;
-  const POINT_SIZE = 36;
+  // --- テキストオーバーレイ（エディトリアル調・下から積んで署名との余白を確保） ---
+  const HEAD = 98, HEAD_LH = 106, SUB = 40, SUB_LH = 54, MX = 88;
+  const headLines = wrap(research.headline, 9);
+  const subLines = wrap(research.sub, 22).slice(0, 2);
+  const headCount = headLines.length;
+  const subCount = subLines.length;
 
-  let y = 640;
-  const headlineSvg = headlineLines
-    .map((l) => {
-      const s = `<text x="80" y="${y}" font-family="${FONT}" font-size="${HEADLINE_SIZE}" font-weight="900" fill="#ffffff">${esc(l)}</text>`;
-      y += HEADLINE_SIZE + 16;
-      return s;
-    })
+  const lastSubBaseline = 1132; // サブ最終行のベースライン（署名の上に十分な余白）
+  const subBaselines = subLines.map((_, i) => lastSubBaseline - (subCount - 1 - i) * SUB_LH);
+  const headBottomBaseline = subCount ? subBaselines[0] - 78 : 1150;
+  const headBaselines = headLines.map((_, j) => headBottomBaseline - (headCount - 1 - j) * HEAD_LH);
+  const ruleY = headBaselines[0] - HEAD - 6;
+
+  const headlineSvg = headBaselines
+    .map((by, idx) => `<text x="${MX}" y="${by}" font-family="${FONT}" font-size="${HEAD}" font-weight="900" fill="#ffffff" letter-spacing="-1.5">${esc(headLines[idx])}</text>`)
     .join('\n');
-
-  y += 8;
-  const subSvg = subLines
-    .map((l) => {
-      const s = `<text x="84" y="${y}" font-family="${FONT}" font-size="${SUB_SIZE}" font-weight="700" fill="#d9dcff">${esc(l)}</text>`;
-      y += SUB_SIZE + 12;
-      return s;
-    })
-    .join('\n');
-
-  y += 42;
-  const pointsSvg = (research.points || [])
-    .slice(0, 3)
-    .map((p) => {
-      const lines = wrap(p, 25);
-      const bullet = `<circle cx="100" cy="${y - 12}" r="9" fill="${config.accentColor2}"/>`;
-      const texts = lines
-        .map((l) => {
-          const s = `<text x="132" y="${y}" font-family="${FONT}" font-size="${POINT_SIZE}" font-weight="700" fill="#ffffff">${esc(l)}</text>`;
-          y += POINT_SIZE + 12;
-          return s;
-        })
-        .join('\n');
-      y += 14;
-      return bullet + '\n' + texts;
-    })
+  const subSvg = subBaselines
+    .map((by, idx) => `<text x="${MX}" y="${by}" font-family="${FONT}" font-size="${SUB}" font-weight="600" fill="#e7e9f6">${esc(subLines[idx])}</text>`)
     .join('\n');
 
   const overlay = `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#0b0d1a" stop-opacity="0"/>
-      <stop offset="30%" stop-color="#0b0d1a" stop-opacity="0.78"/>
-      <stop offset="100%" stop-color="#0b0d1a" stop-opacity="0.92"/>
+    <linearGradient id="scrim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#05060d" stop-opacity="0.55"/>
+      <stop offset="40%" stop-color="#05060d" stop-opacity="0.12"/>
+      <stop offset="70%" stop-color="#05060d" stop-opacity="0.72"/>
+      <stop offset="100%" stop-color="#05060d" stop-opacity="0.96"/>
     </linearGradient>
   </defs>
 
-  <rect x="0" y="420" width="${W}" height="${H - 420}" fill="url(#panel)"/>
+  <rect width="${W}" height="${H}" fill="url(#scrim)"/>
 
-  <rect x="64" y="64" rx="26" ry="26" width="560" height="60" fill="#0b0d1a" fill-opacity="0.72"/>
-  <rect x="64" y="64" rx="26" ry="26" width="560" height="60" fill="none" stroke="${config.accentColor2}" stroke-width="2"/>
-  <text x="94" y="106" font-family="${FONT}" font-size="30" font-weight="800" fill="#ffffff">${esc(config.brand)}</text>
+  <!-- キッカー（小さなブランド表示） -->
+  <circle cx="${MX + 7}" cy="102" r="7" fill="${config.accentColor2}"/>
+  <text x="${MX + 26}" y="112" font-family="${FONT}" font-size="28" font-weight="700" fill="#eef0ff" opacity="0.92">${esc(config.brand)}</text>
 
-  <rect x="80" y="${640 - HEADLINE_SIZE - 4}" width="120" height="10" fill="${config.accentColor2}"/>
+  <!-- アクセントルール -->
+  <rect x="${MX}" y="${ruleY}" width="72" height="6" rx="3" fill="${config.accentColor2}"/>
 
   ${headlineSvg}
   ${subSvg}
-  ${pointsSvg}
 
-  <rect x="0" y="${H - 96}" width="${W}" height="96" fill="${config.accentColor}"/>
-  <text x="80" y="${H - 36}" font-family="${FONT}" font-size="32" font-weight="800" fill="#ffffff">${esc(config.handle)}</text>
-  <text x="${W - 80}" y="${H - 36}" text-anchor="end" font-family="${FONT}" font-size="30" font-weight="700" fill="#ffffff">${esc(research.date || '')}</text>
+  <!-- 署名（控えめ・帯なし） -->
+  <text x="${MX}" y="${H - 66}" font-family="${FONT}" font-size="28" font-weight="700" fill="#c7cbe6">${esc(config.handle)}</text>
+  <text x="${W - MX}" y="${H - 66}" text-anchor="end" font-family="${FONT}" font-size="26" font-weight="600" fill="#9aa0c4">${esc(research.date || '')}</text>
 </svg>`;
 
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
