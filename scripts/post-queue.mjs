@@ -31,9 +31,28 @@ async function putQueue(data, sha, message) {
 const { X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_SECRET } = process.env;
 const xConfigured = X_API_KEY && X_API_SECRET && X_ACCESS_TOKEN && X_ACCESS_SECRET;
 
-async function postToX(text) {
+function mimeFromUrl(url) {
+  if (/\.png(\?|$)/i.test(url)) return 'image/png';
+  if (/\.gif(\?|$)/i.test(url)) return 'image/gif';
+  if (/\.webp(\?|$)/i.test(url)) return 'image/webp';
+  return 'image/jpeg';
+}
+
+async function postToX(text, imageUrl) {
   const client = new TwitterApi({ appKey: X_API_KEY, appSecret: X_API_SECRET, accessToken: X_ACCESS_TOKEN, accessSecret: X_ACCESS_SECRET });
-  const tweet = await client.v2.tweet({ text });
+  let media;
+  if (imageUrl) {
+    try {
+      const r = await fetch(imageUrl);
+      if (!r.ok) throw new Error('画像取得 HTTP ' + r.status);
+      const buf = Buffer.from(await r.arrayBuffer());
+      const mediaId = await client.v1.uploadMedia(buf, { mimeType: mimeFromUrl(imageUrl) });
+      media = { media_ids: [mediaId] };
+    } catch (e) {
+      console.warn('画像添付に失敗、テキストのみで投稿します:', String((e && e.message) || e));
+    }
+  }
+  const tweet = await client.v2.tweet(media ? { text, media } : { text });
   return 'https://x.com/i/status/' + tweet.data.id;
 }
 
@@ -48,7 +67,7 @@ async function run() {
     if (p.platform && p.platform !== 'x') continue; // 今はXのみ対応（Reddit等は今後）
     if (!xConfigured) { p.status = 'failed'; p.error = 'X認証情報が不足しています'; continue; }
     try {
-      p.postedUrl = await postToX(p.text);
+      p.postedUrl = await postToX(p.text, p.imageUrl);
       p.status = 'posted';
       p.postedAt = new Date().toISOString();
       console.log('投稿完了:', p.postedUrl);

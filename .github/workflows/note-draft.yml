@@ -1,9 +1,10 @@
 name: daily-note-draft
 
 on:
-  schedule:
-    # UTC指定。'0 22 * * *' = 日本時間 07:00（毎朝）。公開前に朝チェックしやすい時間。
-    - cron: '0 22 * * *'
+  # 定時実行は停止（note全文は daily-candidates の各候補に統合されたため重複回避）。
+  # 単発で使いたいときは Actions から手動実行できるよう workflow_dispatch は残す。
+  # schedule:
+  #   - cron: '0 22 * * *'
   workflow_dispatch:
 
 permissions:

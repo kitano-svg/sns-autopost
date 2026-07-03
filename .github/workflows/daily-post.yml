@@ -1,14 +1,16 @@
-name: daily-sns-post
+name: daily-candidates
 
+# 毎朝、投稿候補を N 件生成して（画像＋note全文）メールで送る。
+# 自動投稿はしない（承認制）。承認はダッシュボードで行い queue.json 経由で
+# queue-post ワークフローが指定時刻にXへ投稿する。
 on:
   schedule:
-    # UTC指定。'0 9 * * *' = 日本時間 18:00（毎日）
-    # 変更例: 朝7:30 JST → '30 22 * * *'
-    - cron: '0 9 * * *'
+    # UTC指定。'0 3 * * *' = 日本時間 12:00（毎日・昼に候補メール／既定は翌日分の投稿候補）
+    - cron: '0 3 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'true にすると投稿せず画像生成まで（テスト用）'
+        description: 'true にするとメール送信せず候補生成のみ（テスト用）'
         required: false
         default: 'false'
 
@@ -16,16 +18,12 @@ permissions:
   contents: write
 
 concurrency:
-  group: daily-sns-post
+  group: daily-candidates
   cancel-in-progress: false
 
 jobs:
-  post:
+  candidates:
     runs-on: ubuntu-latest
-    # IG鍵をジョブ環境に展開しておく。未登録なら空文字になり、下のIGステップがスキップされる。
-    env:
-      IG_USER_ID: ${{ secrets.IG_USER_ID }}
-      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -39,50 +37,38 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: リサーチ (Claude + Web検索)
+      - name: 最適化（学びを更新・過去投稿を自己レビュー）
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: node scripts/research.mjs
+        run: node scripts/optimize.mjs
 
-      - name: 画像生成 (AI背景 + テンプレ文字入れ)
+      - name: 候補を生成（リサーチ＋note全文＋画像・学びを反映）
         env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/generate-image.mjs
+        run: node scripts/generate-candidates.mjs
 
-      - name: 画像をリポジトリにコミット (Instagram用の公開URL)
-        id: commitimg
+      - name: 候補と学びをリポジトリにコミット（画像の公開URL用）
         run: |
-          DATE=$(TZ=Asia/Tokyo date +%Y-%m-%d)
-          mkdir -p posts
-          cp out/post.png "posts/${DATE}.png"
-          cp out/research.json "posts/${DATE}.json"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add posts
-          git commit -m "post: ${DATE}" || echo "no changes"
+          git add -A candidates learnings.json
+          git commit -m "candidates: $(TZ=Asia/Tokyo date +%Y-%m-%d)" || echo "no changes"
           git push
-          echo "image_url=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/posts/${DATE}.png" >> "$GITHUB_OUTPUT"
 
-      - name: Xへ投稿
+      - name: 候補をメール送信（Resend）
         if: ${{ github.event.inputs.dry_run != 'true' }}
         env:
-          X_API_KEY: ${{ secrets.X_API_KEY }}
-          X_API_SECRET: ${{ secrets.X_API_SECRET }}
-          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
-          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
-        run: node scripts/post-x.mjs
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FROM: ${{ secrets.RESEND_FROM }}
+          REVIEWER_EMAIL: ${{ secrets.REVIEWER_EMAIL }}
+          DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
+        run: node scripts/email-candidates.mjs
 
-      # IG_ACCESS_TOKEN が未登録の間は自動スキップ（Xだけ稼働できる）。鍵を入れれば自動で有効化。
-      - name: Instagramへ投稿
-        if: ${{ github.event.inputs.dry_run != 'true' && env.IG_ACCESS_TOKEN != '' }}
-        env:
-          IMAGE_URL: ${{ steps.commitimg.outputs.image_url }}
-        run: node scripts/post-instagram.mjs
-
-      - name: 成果物を保存 (確認用)
+      - name: 成果物を保存（確認用）
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: post-output
+          name: candidates-output
           path: out/
           retention-days: 14
