@@ -198,6 +198,61 @@ async function researchOne(topic, postType) {
   throw lastErr || new Error('生成に失敗');
 }
 
+function buildQuotesPrompt() {
+  const audience = config.audience || 'AIやClaudeで副業したい人';
+  return `あなたは「${config.brand}」としてXで発信します。読者は「${audience}」。
+今日の「引用ポスト（引用RT）」候補を探してください。
+
+# やること
+Web検索で、ここ2週間ほどの、AI副業 / Claude・Anthropic / AI×お金・稼ぎ方・Web制作 に関する
+「引用してコメントする価値がある“実在のXポスト”」を2〜3件見つける。
+
+# 厳守（重要）
+- 実在が確認できた x.com または twitter.com の status URL だけを返す（例: https://x.com/user/status/1234567890）。URLを推測・捏造しない。確証がなければ含めない。1件も無ければ quotes は空配列にする。
+- 信頼できる発信者で、具体的・議論の価値がある内容を選ぶ。炎上/誹謗中傷/扇動/アダルト/広告・スパム/政治的に過激 なものは避ける。
+- 各候補に、下の口調で「引用コメント案」を付ける。ただ同意・要約せず自分の視点を足す。110文字以内。ハッシュタグ・URL・宣伝は入れない。盛らない・煽らない。
+${voiceBlock()}
+以下のJSON形式のみで出力（JSON以外は書かない）:
+{"quotes": [{"url": "https://x.com/xxx/status/123...", "author": "@ユーザー名", "summary": "ポストの要旨(60字以内)", "why": "引用する価値(40字以内)", "comment": "あなたのコメント案(110字以内)"}]}`;
+}
+
+async function researchQuotes() {
+  if (DRY) {
+    return [{
+      url: 'https://x.com/venturecapita/status/1938800000000000000',
+      author: '@venturecapita',
+      summary: '（ダミー）正しい戦略でも資金調達力とのバランスが取れないと失敗する、という話',
+      why: '副業の「続ける資金＝時間」の話に通じる',
+      comment: '正直これ、副業でも全く同じなんですよね。戦略が正しくても、続ける資金（＝時間）が無いと検証すら回せない。まず小さく回して“間違える回数”を確保するのが先だと思います。',
+    }];
+  }
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+    body: JSON.stringify({
+      model: config.model || 'claude-sonnet-5',
+      max_tokens: 3000,
+      tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 6 }],
+      messages: [{ role: 'user', content: buildQuotesPrompt() }],
+    }),
+  });
+  if (!res.ok) throw new Error('Anthropic API ' + res.status);
+  const data = await res.json();
+  const text = (data.content || []).filter((b) => b.type === 'text').map((b) => b.text).join('\n');
+  const parsed = extractJson(text);
+  const arr = parsed && Array.isArray(parsed.quotes) ? parsed.quotes : [];
+  const out = [];
+  for (const q of arr) {
+    if (!/status(?:es)?\/(\d{5,25})/.test(String(q.url || ''))) continue; // 実在statusURLのみ
+    const clean = {};
+    for (const k of ['url', 'author', 'summary', 'why', 'comment']) clean[k] = stripTags(q[k] || '');
+    if (!clean.comment) continue;
+    out.push(clean);
+    if (out.length >= 3) break;
+  }
+  return out;
+}
+
 function dummyOne(topic, postType, i) {
   return {
     post_type: postType,
@@ -289,7 +344,17 @@ for (let i = 0; i < todays.length; i++) {
   });
 }
 
-if (!candidates.length) {
+// 引用ポスト候補（AIがWeb検索で実在ポストを探す）
+let quoteCandidates = [];
+try {
+  console.log('引用ポスト候補を探索中…');
+  quoteCandidates = await researchQuotes();
+  console.log(`引用ポスト候補: ${quoteCandidates.length}件`);
+} catch (e) {
+  console.error('引用候補の探索に失敗（スキップ）:', e.message);
+}
+
+if (!candidates.length && !quoteCandidates.length) {
   console.error('候補が1件も生成できませんでした');
   process.exit(1);
 }
@@ -304,6 +369,7 @@ const out = {
   postTimes: config.postTimes || ['08:00', '12:30', '19:00'],
   count: candidates.length,
   candidates,
+  quoteCandidates,
 };
 
 const dir = path.join(root, 'candidates');

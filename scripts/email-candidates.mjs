@@ -54,6 +54,23 @@ const cardsHtml = data.candidates
   </td></tr>`)
   .join('');
 
+const quotes = data.quoteCandidates || [];
+const quotesHtml = quotes.length ? `
+  <tr><td style="font-family:sans-serif;color:#fff;padding:22px 8px 10px;">
+    <div style="font-size:16px;font-weight:800;border-top:1px solid #262a3d;padding-top:18px;">💬 引用ポスト候補（AIが見つけました）</div>
+  </td></tr>
+  ${quotes.map((q) => `
+  <tr><td style="padding:0 0 14px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#12141f;border:1px solid #262a3d;border-radius:14px;">
+      <tr><td style="padding:14px 16px;color:#e8eaf2;font-family:sans-serif;">
+        <div><span style="background:#1d9bf0;color:#fff;font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;">引用候補</span> <span style="color:#8b90a8;font-size:12px;">${esc(q.author)}</span></div>
+        <div style="font-size:13px;color:#cfd3e6;margin:8px 0;border-left:3px solid #1d9bf0;padding-left:10px;line-height:1.6;">${esc(q.summary)}</div>
+        <div style="font-size:13px;color:#fff;line-height:1.7;">💬 ${esc(q.comment)}</div>
+        <div style="margin-top:8px;"><a href="${esc(q.url)}" style="color:#1d9bf0;font-size:12px;">🔗 元ツイートを確認</a></div>
+      </td></tr>
+    </table>
+  </td></tr>`).join('')}` : '';
+
 const html = `<!doctype html><html><body style="margin:0;background:#0b0d16;padding:24px 0;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
@@ -71,6 +88,7 @@ const html = `<!doctype html><html><body style="margin:0;background:#0b0d16;padd
     <div style="font-family:sans-serif;color:#6b7089;font-size:11px;margin-top:8px;">${esc(approveUrl)}</div>
   </td></tr>
   ${cardsHtml}
+  ${quotesHtml}
   <tr><td style="font-family:sans-serif;color:#6b7089;font-size:11px;padding:8px;line-height:1.6;">
     このメールは sns-autopost（GitHub Actions）が自動生成しています。全文（note用Markdown）は承認ページで各候補ごとにコピーできます。
   </td></tr>
