@@ -117,7 +117,7 @@ ${voiceBlock()}${learningsBlock()}
 - CTAや宣伝の押し売りはしない。noteへの自然な誘導（「詳しくはnoteに」等）はA末尾に入れてよい（※URLは入れない。後で人が付ける）。
 - Aの本文にnote URLは書かない（承認時に別途付与するため）。
 
-以下のJSON形式のみで出力（JSON以外は一切書かない）:
+以下のJSON形式のみで出力（JSON以外は一切書かない）。**重要: 有効なJSONにすること。文字列の中で改行する場合は必ず \\n を使い、生の改行やタブを文字列内に入れない。**:
 
 {
   "post_type": "${postType}",
@@ -135,27 +135,65 @@ ${voiceBlock()}${learningsBlock()}
 }`;
 }
 
-async function researchOne(topic, postType) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: config.model || 'claude-sonnet-5',
-      max_tokens: 8000,
-      tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 5 }],
-      messages: [{ role: 'user', content: buildPrompt(topic, postType) }],
-    }),
-  });
-  if (!res.ok) throw new Error(`Anthropic API ${res.status}: ${await res.text()}`);
-  const data = await res.json();
-  const text = (data.content || []).filter((b) => b.type === 'text').map((b) => b.text).join('\n');
+// JSON文字列リテラル内に生の制御文字（改行/タブ等）が入っていても壊れないように修復する。
+// モデルが note_body_markdown などに生の改行を入れると JSON.parse が "Bad control character" で落ちるため。
+function repairJsonControlChars(s) {
+  let out = '';
+  let inStr = false, esc = false;
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    const code = s.charCodeAt(i);
+    if (esc) { out += ch; esc = false; continue; }
+    if (ch === '\\') { out += ch; esc = true; continue; }
+    if (ch === '"') { inStr = !inStr; out += ch; continue; }
+    if (inStr && code < 0x20) {
+      if (ch === '\n') out += '\\n';
+      else if (ch === '\r') out += '\\r';
+      else if (ch === '\t') out += '\\t';
+      else out += '\\u' + code.toString(16).padStart(4, '0');
+      continue;
+    }
+    out += ch;
+  }
+  return out;
+}
+
+function extractJson(text) {
   const m = text.match(/\{[\s\S]*\}/);
-  if (!m) throw new Error('JSONを抽出できませんでした:\n' + text.slice(0, 500));
-  return JSON.parse(m[0]);
+  if (!m) return null;
+  try { return JSON.parse(m[0]); }
+  catch { try { return JSON.parse(repairJsonControlChars(m[0])); } catch { return null; } }
+}
+
+async function researchOne(topic, postType) {
+  let lastErr = null;
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: config.model || 'claude-sonnet-5',
+          max_tokens: 8000,
+          tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 5 }],
+          messages: [{ role: 'user', content: buildPrompt(topic, postType) }],
+        }),
+      });
+      if (!res.ok) { lastErr = new Error(`Anthropic API ${res.status}`); continue; }
+      const data = await res.json();
+      const text = (data.content || []).filter((b) => b.type === 'text').map((b) => b.text).join('\n');
+      const parsed = extractJson(text);
+      if (parsed) return parsed;
+      lastErr = new Error('JSONを抽出/解析できませんでした（attempt ' + attempt + '）');
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr || new Error('生成に失敗');
 }
 
 function dummyOne(topic, postType, i) {
