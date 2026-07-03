@@ -70,6 +70,8 @@ function voiceBlock() {
   if (v.firstPerson) lines.push(`- 一人称: 「${v.firstPerson}」`);
   if (v.tone) lines.push(`- トーン: ${v.tone}`);
   if (v.sentenceStyle) lines.push(`- 文のリズム: ${v.sentenceStyle}`);
+  if (v.humanity) lines.push(`- 人間らしさ: ${v.humanity}`);
+  if (v.integrity) lines.push(`- 誠実さ（最優先で守る）: ${v.integrity}`);
   if (v.emoji) lines.push(`- 絵文字: ${v.emoji}`);
   if (v.hookBias) lines.push(`- フックの傾向: ${v.hookBias}`);
   if (Array.isArray(v.avoid) && v.avoid.length) lines.push(`- 使わない: ${v.avoid.join(' / ')}`);
