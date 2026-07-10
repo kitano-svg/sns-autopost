@@ -1,0 +1,96 @@
+{
+  "date": "2026-07-10",
+  "dateLabel": "2026年7月10日金曜日",
+  "targetDate": "2026-07-11",
+  "generatedAt": "2026-07-10T07:01:44.933Z",
+  "postTimes": [
+    "08:00",
+    "12:30",
+    "19:00"
+  ],
+  "count": 3,
+  "candidates": [
+    {
+      "id": "c1",
+      "post_type": "logic",
+      "theme": "AIでクリエイティブ・業務効率化の能力はついたのに、それを活かせず稼ぎに繋げられない問題と、その突破口",
+      "headline": "単発5万→月30万の壁の正体",
+      "sub": "AI能力があるのに稼げない人の共通点と突破口",
+      "points": [
+        "単発提供は価格競争に巻き込まれる",
+        "同じスキルでも継続契約は単価が別次元",
+        "パッケージ化の3ステップで抜け出す"
+      ],
+      "x_summary": "『作れる』のに稼げないのは、能力の問題じゃなく売り方の問題。単発5万円のLP制作も、月額パッケージにすれば継続30万円になります。差は中身より『見せ方』。詳しくはnoteに。 #AI副業",
+      "note_title": "単発5万円が月30万円に化ける、値付けの盲点",
+      "note_excerpt": "AI能力はあるのに稼げない人へ。単発作業を月額パッケージに変える具体的な手順と言い回しを解説します。",
+      "note_tags": [
+        "AI副業",
+        "フリーランス",
+        "業務効率化",
+        "マネタイズ",
+        "副業"
+      ],
+      "note_body_markdown": "## 『作れる』のに稼げない、という相談\n\n最近、こういう相談が増えています。\n\n「AIでLPもバナーも作れるようになった。SNS運用もできる。でも、単発の案件しか来なくて、月の売上が安定しない」\n\n正直に言うと、僕も最初は同じ壁にぶつかりました。作れるようになった喜びと、稼げない現実のギャップ。これ、地味にキツいんですよね。\n\nこの問題、根っこは「スキルが足りない」ことじゃないです。**単発の作業提供から抜け出せていない**こと。今日はここを、数字と手順で分解します。\n\n## なぜ単発だと稼げないのか（理由）\n\n単発案件は「作れる人」同士の価格競争になります。クライアントから見ると、あなたの成果物は「代替可能な作業」でしかない。だから安く叩かれる。\n\n実際の相場を見ると、この差がよく分かります。\n\nLP制作の場合、クラウドソーシング経由の単発依頼は\nデザインとコーディングのみで5万〜15万円程度が相場\nです。\n\n一方、同じLP制作でも**継続契約**になると景色が変わります。\n週2・週3で事業会社のLP改善に入る案件では、月40万〜90万円台の募集も見られます\n。\n\nSNS運用も同じ構造です。個人が単発で「バナー1枚作ります」だと数千円〜数万円止まり。でも代行会社が受けている案件を見ると、\nSNS運用代行の費用は月額10万円以下から50万円以上と幅があり、依頼する作業内容や投稿本数によって大きく変動\nします。さらに\n投稿代行のみなら5万円以下、戦略立案から運用・分析まで含めると15〜30万円程度が中心帯\nという内訳もあります。\n\n同じ「LPを作る」「SNSを回す」というスキルなのに、**単発か継続か**で単価が3〜10倍変わる。これがロジックです。\n\n## 突破口：パッケージ化の3ステップ\n\nここから具体的な手順です。\n\n**① 今やっている単発作業を書き出す**\nバナー制作、LP修正、投稿代行…。あなたが「作業として」提供しているものをリストアップします。\n\n**② 作業を「成果の一部」として再定義する**\nここが最大のポイント。「バナーを作る」を「月4本の投稿クリエイティブ制作＋簡易レポート」に変える。「LPを作る」を「公開後1ヶ月の改善提案付きLP制作」に変える。作業単体ではなく、**継続的に成果を出すためのプロセスの一部**として言語化するんです。\n\n**③ 提案時の言い回しを用意する**\n単発の見積もりを出す前に、こう聞いてみてください。\n\n「単発でお作りすることもできますが、公開後の反応を見て改善まで一緒にやると成果が変わりやすいです。月額で運用込みのプランもご用意できますが、どちらがご希望に近いですか？」\n\n…まあ、最初は僕もこれが言えなくて、聞かれるまで黙ってました。でも聞かないと、クライアントは「月額プラン」の存在自体を知らないんです。選択肢を見せるだけで、継続提案に乗ってくる人は一定数います。\n\n## 結論：稼げないのは能力の問題じゃない\n\nAIで作れるようになった能力そのものは、もう十分です。稼げていない理由は、その能力を「単発の作業」としてしか出していないから。\n\n同じ制作物でも、パッケージにして継続提案するだけで、見えている市場が変わります。今週、直近の案件を1つ選んで、「これ、月額プランにできないか？」と考えてみてください。地味な作業ですが、ここが分岐点です。",
+      "source_name": "インディバースフリーランスメディア / Web幹事 / DMFマーケティングラボ",
+      "source_url": "https://freelance.indieverse.co.jp/media/sidework/lp-production-sidework",
+      "image": "candidates/2026-07-10/c1.jpg",
+      "imageUrl": "https://raw.githubusercontent.com/kitano-svg/sns-autopost/main/candidates/2026-07-10/c1.jpg"
+    },
+    {
+      "id": "c3",
+      "post_type": "news",
+      "theme": "Anthropic / Claude の新発表・公式ブログ・リリースノートの要点",
+      "headline": "Claude新機能『Reflect』",
+      "sub": "使い方を可視化して稼ぐ型を見つける",
+      "points": [
+        "β版で利用パターンを可視化",
+        "過去1〜12ヵ月の傾向が見える",
+        "反復タスクが見えれば商品化のヒント"
+      ],
+      "x_summary": "Claudeに『Reflect』登場。1〜12ヵ月分のAI利用を可視化するβ機能。繰り返してるタスクが見えれば、それが商品化のヒントになります。詳しくはnoteで。 #AI副業",
+      "note_title": "Claude新機能Reflectで見える『稼げる型』の作り方",
+      "note_excerpt": "Anthropicが公開したClaude新機能Reflectの要点と、副業のヒントをまとめました。",
+      "note_tags": [
+        "Claude",
+        "Anthropic",
+        "AI副業",
+        "副業",
+        "生成AI"
+      ],
+      "note_body_markdown": "先週、Claudeを使いながら「あれ、俺このタスクいつも同じことやってるな」って気づいたことがあって。\n\n実はそれ、Anthropicが2026年7月9日に発表した新機能「Reflect」を触ってみたときの感想なんです。今日はこれ、正確な要点と、副業者にとっての意味を整理します。\n\n## Reflectって何？\n\nToday we're introducing, in beta, a new way to reflect on and refine how you use Claude.\n\n公式ブログによると、In our interviews with users, a common theme that's emerged is a desire to better understand how, exactly, AI can be integrated into daily life.\n\nつまり「AIをどう生活・仕事に組み込むか、みんな悩んでるよね」というところから生まれた機能、ってことです。正直、僕もずっとそこ悩んでました。\n\n具体的には、Your reflection starts with a summary of how you've been using Claude, covering key topics, your usage patterns, and the types of tasks you often work through. You can look back on your Claude chat activity over the past 1, 3, 6, or 12 months.\n\n過去1ヵ月〜12ヵ月分の「自分のAI使用ログ」を、まとめて見せてくれる機能です。\n\n## 誰が使えるのか、プライバシーはどうなってるのか\n\nThis tool is currently available in beta for Free, Pro, and Max users who have memory turned on. 無料プランでも使えるのは地味にありがたいポイントです。\n\nプライバシー面も公式がちゃんと言及してます。Your reflection doesn't draw from incognito chats, nor does it pull in underlying files from your connected tools. For example, if you asked Claude to summarize your inbox, that summary may come up in your reflection, but the source emails would not. さらにany conversation connected to a health integration tool is left out of your insights entirely. 健康系の会話は完全除外、という設計になっています。\n\n## これ、副業者にとって何を意味するか\n\nここが今日一番言いたいところです。\n\nReflectは「自分がClaudeに何を頼んでるか」を可視化してくれる機能。海外メディアの報道では、it can display the types of tasks a user frequently brings to Claude, when they use it most, and how that work aligns with Anthropic's AI Fluency Framework, which includes delegation, description, discernment, and diligence.とされています。要は「何をAIに丸投げして、何を自分でやってるか」の傾向まで見えるらしいんです。\n\n正直、これって副業のヒントの宝庫だと思います。\n\nたとえば「毎週同じような要件整理をClaudeにやらせてる」「毎回似た構成の提案書を作らせてる」って傾向が見えたら――それ、もう単発作業じゃなく“型”になってる証拠です。型になってるものは、パッケージ化できます。値付けして、サービスとして出せる段階に来てる、ってことなんですよね。\n\nAI chatbots are becoming work tool, search engine, confidant and coach all at once — raising the same kinds of questions about healthy use that social media did, but with even more intimate data. こう指摘されるくらい、AIとの付き合い方は今、みんなの共通の悩みになってます。だからこそ「自分のAI利用の型」を先に言語化できた人が、商品を作りやすい。\n\n…まあ、Reflect自体はまだβ版だし、これで即お金になるわけじゃないです。でも「自分が繰り返しているタスク」を客観的に見せてくれる機能って、実は棚卸しにすごく使えます。今週、僕も自分のClaude利用、Reflectで見返してみようと思ってます。\n\n## 出典\n\nAnthropic公式ブログ\nhttps://www.anthropic.com/news/reflect-with-claude",
+      "source_name": "Anthropic公式ブログ",
+      "source_url": "https://www.anthropic.com/news/reflect-with-claude",
+      "image": "candidates/2026-07-10/c3.jpg",
+      "imageUrl": "https://raw.githubusercontent.com/kitano-svg/sns-autopost/main/candidates/2026-07-10/c3.jpg"
+    },
+    {
+      "id": "c4",
+      "post_type": "logic",
+      "theme": "AI副業の意思決定フレーム（どこに時間を張り、何を捨てるか）",
+      "headline": "副業の時間、どこに張る？",
+      "sub": "AI副業の意思決定フレーム３ステップ",
+      "points": [
+        "時給2,083円未満の作業は捨てる基準",
+        "作業と資産を分けて時間配分",
+        "断る言い回しを先に用意しておく"
+      ],
+      "x_summary": "AI使えるのに稼げない人へ。副業の時給中央値は2,083円。それ以下の作業は『捨てる』基準を先に決めるだけで時間配分が変わります。詳しくはnoteに。#AI副業",
+      "note_title": "AI副業で伸びない人がやってない『捨てる基準』",
+      "note_excerpt": "AIは使えるのに稼げない人向け。時給換算で何を捨て、どこに時間を張るかの判断フレームを解説。",
+      "note_tags": [
+        "AI副業",
+        "フリーランス",
+        "副業",
+        "業務効率化",
+        "マネタイズ"
+      ],
+      "note_body_markdown": "## AIは使える。でも稼ぎには変わってない\n\n正直に言うと、僕も最初はこの状態でした。\n\n画像生成、文章生成、簡単なコーディング。ツールは触れる。作れる。でも月末の売上を見て『あれ、思ったより増えてないな』と。\n\n原因、はっきりしてます。**時間をどこに張るかの判断基準がなかった**んです。\n\n依頼が来たら全部受ける。単価が低くても『まあAIでサクッとできるし』と受ける。結果、時間はパンパンなのに売上は伸びない。これ、AI副業でよくあるハマり方だと思います。\n\n## ステップ1：自分の時給を数値化する\n\nまず主張。**『時給換算できない仕事』は判断できません。**\n\nなぜか。感覚で『これは割に合わない』と思っても、数字がないと交渉も断りもできないからです。\n\n2025年のパーソル総合研究所の調査だと、副業をしている人の時給は平均値は3,617円、中央値は2,083円という結果が出ています。しかも2018年の調査開始から右肩上がりで、2025年は最も高い水準に達したそうです。\n\nつまり、中央値の2,083円を下回る作業を延々と受けていたら、それは『副業の平均以下で時間を売っている』ということ。ここが最初の判断ラインです。\n\nやること：直近3ヶ月の案件を全部書き出して、（報酬÷作業時間）で時給を出す。感覚じゃなく数字にする。これだけで『この案件、実は時給1,200円だった』みたいな現実が見えてきます。\n\n## ステップ2：『作業』と『資産』を分ける\n\n次の主張。**時給が低くても、資産化できる作業は残していい。**\n\nこれ、ステップ1だけだと『低単価は全部切る』になってしまうんですが、それだと視野が狭いです。\n\n判断基準はこうです。\n\n- **単発作業**：一回やって終わり。テンプレ化できない。二次利用できない。→時給が低ければ即捨てる\n- **資産化できる作業**：一度作った型・プロンプト・構成が、次の案件でもそのまま（もしくは少し調整して）使える。→時給が今低くても、将来の作業時間を減らすので残す価値がある\n\n例えば、SNS用のバナー画像を1枚だけ作る単発依頼。時給換算したら1,500円だったとします。これは切っていい候補です。\n\n一方、同じバナー制作でも『テンプレとプロンプトを構築して、月5枚を継続で受ける』提案に変えられるなら、初回の時給は低くても2枚目以降は時間が半分以下になります。ここは残す価値があります。\n\n見分け方は簡単。**『このやり方、次の案件でもう一度使えるか？』**を自分に聞くだけです。使えないなら単発、使えるなら資産。\n\n## ステップ3：断る言い回しを先に決めておく\n\n地味ですが、これ結構デカいです。\n\n判断基準があっても、いざ依頼が来ると『まあ今回だけ』と受けてしまう。僕も何度もやりました。基準を作っても、断る言葉を持っていないと基準は機能しないんです。\n\n実際に使っている言い回しはこんな感じです。\n\n『今の単価ですと、単発対応が中心になります。継続的にご依頼いただけるなら、テンプレ構築込みで単価を◯円に調整できますが、いかがでしょうか』\n\nポイントは、断るのではなく**『継続なら安くできる』という形で条件を変える提案**にすること。相手も損した気にならず、こちらも資産化前提の単価に持っていける。\n\n## まとめ：判断基準がないと、AIスキルは時間の切り売りで終わる\n\n副業の時給中央値は2,083円。ここを軸に、\n\n1. 自分の時給を数値化する\n2. 単発か資産化かで残す・切るを決める\n3. 断る（条件を変える）言い回しを先に用意する\n\nこの3ステップだけで、AIで『作れる』が『稼げる』に変わっていきます。…まあ、やってみると分かります。まずは直近の案件、時給換算だけでもやってみてください。",
+      "source_name": "パーソル総合研究所「第四回 副業の実態・意識に関する定量調査」",
+      "source_url": "https://freelance.levtech.jp/guide/detail/1788/",
+      "image": "candidates/2026-07-10/c4.jpg",
+      "imageUrl": "https://raw.githubusercontent.com/kitano-svg/sns-autopost/main/candidates/2026-07-10/c4.jpg"
+    }
+  ],
+  "quoteCandidates": []
+}
