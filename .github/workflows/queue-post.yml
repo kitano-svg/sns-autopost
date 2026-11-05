@@ -1,9 +1,10 @@
 name: queue-post
 
 on:
-  schedule:
-    # 15分ごとに予約キューをチェック（GitHubの仕様で実行が数分〜遅れることあり）
-    - cron: '*/15 * * * *'
+  # 自動X投稿は停止中（2026-11-05）。再開するときは下の schedule のコメントを外す。
+  # schedule:
+  #   # 15分ごとに予約キューをチェック（GitHubの仕様で実行が数分〜遅れることあり）
+  #   - cron: '*/15 * * * *'
   workflow_dispatch:
 
 permissions:
