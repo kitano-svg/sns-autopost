@@ -4,9 +4,10 @@ name: daily-candidates
 # 自動投稿はしない（承認制）。承認はダッシュボードで行い queue.json 経由で
 # queue-post ワークフローが指定時刻にXへ投稿する。
 on:
-  schedule:
-    # UTC指定。'0 3 * * *' = 日本時間 12:00（毎日・昼に候補メール／既定は翌日分の投稿候補）
-    - cron: '0 3 * * *'
+  # AIによる投稿候補の自動生成は停止中（2026-11-05）。再開するときは下の schedule のコメントを外す。
+  # schedule:
+  #   # UTC指定。'0 3 * * *' = 日本時間 12:00（毎日・昼に候補メール／既定は翌日分の投稿候補）
+  #   - cron: '0 3 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
